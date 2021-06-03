@@ -11,7 +11,27 @@
 - 电影评分数据集，包括测试集（trainingSamples.csv）和训练集（testSamples.csv）。数据集为用户给电影评分的日志，评分大于等于3.5为正样本，小于3.5为负样本，另外数据集已经拼接了用户特征和电影特征
 
 ## 推荐算法模型
-### [DeepCrossing](https://github.com/jason-wang1/RecommendAlgorithm/blob/master/tensorflowrec/DeepCrossing.py)
+### [GBDT+LR](https://github.com/jason-wang1/RecommendAlgorithm/blob/master/sklearnrec/gbdt_lr.py)
+GBDT+LR 是FaceBook在2014年提出的CTR模型，用于广告推荐场景。它是由GBDT和LR两个模型组合而成：
+- GBDT 用于特征的自动筛选、交叉，树的深度决定了特征交叉的阶数，最终生成新的特征向量。相比RF，GBDT每颗树学习到的特征划分与组合方式都有所区别
+- LR模型的输入即为GBDT输出的特征向量
+- GBDT 用于构建特征工程，LR用于CTR预估，这两部分模型是独立训练的
+![](picture/GBDT_LR.png)
+
+训练集效果：
+```
+train_log_loss:  0.5462617591783033
+train_auc:  0.7896601538547148
+```
+
+测试集效果：
+```
+test_log_loss:  0.5645459026988678
+test_auc:  0.7726261543531365
+```
+
+
+### [DeepCrossing](https://github.com/jason-wang1/RecommendAlgorithm/blob/master/tensorflowrec/deep_crossing.py)
 DeepCrossing 是微软在2016年提出的CTR模型，用于Bing搜索引擎的广告搜索推荐场景。其结构如下：
 - Feature层：包括类别型特征与数值型特征
 - Embedding层：类别型特征需要做embedding处理，数值型特征不需要
